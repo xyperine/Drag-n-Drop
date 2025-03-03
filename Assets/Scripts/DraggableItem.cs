@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 namespace DragnDrop
@@ -6,8 +7,15 @@ namespace DragnDrop
     {
         [SerializeField] private Rigidbody2D rigidBody;
         [SerializeField] private LayerMask snappingMask;
-        [SerializeField, Range(0f, 0.1f)] private float smoothness;
-        [SerializeField, Range(0f, 1f)] private float snappingRange;
+        [SerializeField, Range(0f, 0.1f)] private float smoothness = 0.03f;
+        [SerializeField, Range(0f, 1f)] private float snappingRange = 0.25f;
+
+        [Header("Animation")]
+        [SerializeField, Range(1f, 2f)] private float grabScaleChange = 1.2f;
+        [SerializeField, Range(0f, 1f)] private float grabAnimationDurationInSeconds = 0.2f;
+        [SerializeField, Range(0f, 0.5f)] private float jumpPower = 0.03f;
+        [SerializeField, Range(0, 5)] private int jumpCount = 1;
+        [SerializeField, Range(0, 0.5f)] private float jumpAnimationDurationInSeconds = 0.2f;
 
         private Pointer _pointer;
         
@@ -36,12 +44,16 @@ namespace DragnDrop
                 return;
             }
 
+            
+            
             transform.position = Vector3.SmoothDamp(transform.position, _snappingPosition, ref _smoothingVelocity, smoothness);
 
             if (Vector2.Distance(transform.position, _snappingPosition) < 0.01f)
             {
                 transform.position = _snappingPosition;
                 _positionFound = false;
+
+                transform.DOJump(transform.position, jumpPower, jumpCount, jumpAnimationDurationInSeconds);
             }
         }
 
@@ -96,6 +108,12 @@ namespace DragnDrop
         }
 
 
+        private void OnMouseDown()
+        {
+            transform.DOScale(grabScaleChange * Vector3.one, grabAnimationDurationInSeconds);
+        }
+
+
         private void OnMouseDrag()
         {
             transform.position = Vector3.SmoothDamp(transform.position, PointerPosition(), ref _smoothingVelocity, smoothness);
@@ -118,6 +136,8 @@ namespace DragnDrop
             FindSnappingPosition();
 
             _pointer.Busy = false;
+            
+            transform.DOScale(Vector3.one, grabAnimationDurationInSeconds);
         }
 
 
