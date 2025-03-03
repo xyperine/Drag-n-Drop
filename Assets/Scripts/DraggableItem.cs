@@ -8,11 +8,19 @@ namespace DragnDrop
         [SerializeField, Range(0f, 0.1f)] private float smoothness;
         [SerializeField] private Rigidbody2D rigidBody;
         [SerializeField, Range(0f, 1f)] private float snappingRange;
+
+        private Pointer _pointer;
         
         private Vector3 _smoothingVelocity;
         
         private Vector3 _snappingPosition;
         private bool _positionFound;
+
+
+        private void Start()
+        {
+            _pointer = FindAnyObjectByType<Pointer>();
+        }
 
 
         private void Update()
@@ -27,8 +35,6 @@ namespace DragnDrop
                     _positionFound = false;
                 }
             }
-
-
         }
 
 
@@ -90,6 +96,7 @@ namespace DragnDrop
             transform.position = Vector3.SmoothDamp(transform.position, PointerPosition(), ref _smoothingVelocity, smoothness);
             rigidBody.bodyType = RigidbodyType2D.Kinematic;
             _positionFound = false;
+            _pointer.Busy = true;
         }
 
 
@@ -104,6 +111,8 @@ namespace DragnDrop
         private void OnMouseUp()
         {
             FindSnappingPosition();
+
+            _pointer.Busy = false;
         }
 
 
