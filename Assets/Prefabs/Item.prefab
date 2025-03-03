@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3201345966433415172}
   - component: {fileID: 4665887936678936366}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 5508122262513941056}
   - component: {fileID: 6318687311224996189}
   - component: {fileID: 8263954151727841515}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -198,5 +198,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothness: 0.0256
-  rigidBody: {fileID: 5508122262513941056}
   snappingRange: 0.246
+  rigidBody: {fileID: 5508122262513941056}
+  snappingMask:
+    serializedVersion: 2
+    m_Bits: 128

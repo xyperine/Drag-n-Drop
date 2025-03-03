@@ -1,12 +1,12 @@
-using System;
 using UnityEngine;
 
 namespace DragnDrop
 {
     public class DraggableItem : MonoBehaviour
     {
-        [SerializeField, Range(0f, 0.1f)] private float smoothness;
         [SerializeField] private Rigidbody2D rigidBody;
+        [SerializeField] private LayerMask snappingMask;
+        [SerializeField, Range(0f, 0.1f)] private float smoothness;
         [SerializeField, Range(0f, 1f)] private float snappingRange;
 
         private Pointer _pointer;
@@ -25,15 +25,23 @@ namespace DragnDrop
 
         private void Update()
         {
-            if (_positionFound)
-            {
-                transform.position = Vector3.SmoothDamp(transform.position, _snappingPosition, ref _smoothingVelocity, smoothness);
+            Snap();
+        }
 
-                if (Vector2.Distance(transform.position, _snappingPosition) < 0.01f)
-                {
-                    transform.position = _snappingPosition;
-                    _positionFound = false;
-                }
+
+        private void Snap()
+        {
+            if (!_positionFound)
+            {
+                return;
+            }
+
+            transform.position = Vector3.SmoothDamp(transform.position, _snappingPosition, ref _smoothingVelocity, smoothness);
+
+            if (Vector2.Distance(transform.position, _snappingPosition) < 0.01f)
+            {
+                transform.position = _snappingPosition;
+                _positionFound = false;
             }
         }
 
@@ -50,17 +58,14 @@ namespace DragnDrop
 
         private void FindSnappingPosition()
         {
-            Collider2D[] colliders = new Collider2D[8];
-            int collidersAmount = Physics2D.OverlapCircle(transform.position, snappingRange, new ContactFilter2D{useTriggers = true}, colliders);
             Collider2D closestCollider = null;
             float distance = float.PositiveInfinity;
+            Collider2D[] colliders = new Collider2D[8];
+            ContactFilter2D filter = new ContactFilter2D
+                {useTriggers = true, useLayerMask = true, layerMask = snappingMask};
+            int collidersAmount = Physics2D.OverlapCircle(transform.position, snappingRange, filter, colliders);
             for (int i = 0; i < collidersAmount; i++)
             {
-                if (!colliders[i] || colliders[i] == GetComponent<Collider2D>())
-                {
-                    continue;
-                }
-
                 if (Vector2.Distance(transform.position, colliders[i].ClosestPoint(transform.position)) < distance)
                 {
                     distance = Vector2.Distance(transform.position, colliders[i].ClosestPoint(transform.position));
@@ -68,7 +73,7 @@ namespace DragnDrop
                 }
             }
 
-            // If no or self we fall
+            // If no we fall
             if (closestCollider == null)
             {
                 rigidBody.bodyType = RigidbodyType2D.Dynamic;
