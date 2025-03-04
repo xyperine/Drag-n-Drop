@@ -6,23 +6,49 @@ namespace DragnDrop
     {
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private Pointer pointer;
+        
+        [Header("Borders")]
         [SerializeField] private float minX;
         [SerializeField] private float maxX;
+        [SerializeField] private Vector2 referenceResolution = new Vector2(16f, 9f);
+        
+        [Header("Scrolling")]
         [SerializeField, Min(0f)] private float scrollSpeed = 1f;
         [SerializeField, Range(0f, 0.1f)] private float smoothing;
 
         private Vector3 _smoothingVelocity;
         private Vector3 _desiredPosition;
 
+        private Camera _camera;
+        private float adjustedMinX;
+        private float adjustedMaxX;
+
 
         private void Awake()
         {
             _desiredPosition = cameraTransform.position;
+
+            _camera = cameraTransform.GetComponent<Camera>();
+
+            AdjustBorders();
+        }
+
+
+        private void AdjustBorders()
+        {
+            float defaultHalfWidth = referenceResolution.x / referenceResolution.y * _camera.orthographicSize;
+            float halfWidth = _camera.aspect * _camera.orthographicSize;
+            float difference = defaultHalfWidth - halfWidth;
+            adjustedMinX = minX - difference;
+            adjustedMaxX = maxX + difference;
         }
 
 
         private void Update()
         {
+#if UNITY_EDITOR
+            AdjustBorders();
+#endif
             CalculateDesiredPosition();
             
             cameraTransform.position = Vector3.SmoothDamp(cameraTransform.position, _desiredPosition, ref _smoothingVelocity, smoothing);
@@ -54,7 +80,7 @@ namespace DragnDrop
 
             _desiredPosition = cameraTransform.position;
             _desiredPosition.x += -Input.mousePositionDelta.x * Time.deltaTime * scrollSpeed;
-            _desiredPosition.x = Mathf.Clamp(_desiredPosition.x, minX, maxX);
+            _desiredPosition.x = Mathf.Clamp(_desiredPosition.x, adjustedMinX, adjustedMaxX);
         }
     }
 }
