@@ -67,7 +67,7 @@ namespace DragnDrop
                 return;
             }
 #else
-            if (Input.touchCount <= 0)
+            if (Input.touchCount == 0)
             {
                 return;
             }

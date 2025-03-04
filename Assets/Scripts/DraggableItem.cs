@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
@@ -33,7 +32,7 @@ namespace DragnDrop
         private Vector3 _smoothingVelocity;
         
         private Vector3 _snappingPosition;
-        private bool _positionFound;
+        private bool _snappingPositionFound;
 
 
         private void Awake()
@@ -56,7 +55,7 @@ namespace DragnDrop
 
         private void Snap()
         {
-            if (!_positionFound)
+            if (!_snappingPositionFound)
             {
                 return;
             }
@@ -66,7 +65,7 @@ namespace DragnDrop
             if (Vector2.Distance(transform.position, _snappingPosition) < 0.01f)
             {
                 transform.position = _snappingPosition;
-                _positionFound = false;
+                _snappingPositionFound = false;
 
                 transform.DOJump(transform.position, jumpPower, jumpCount, jumpAnimationDurationInSeconds);
             }
@@ -75,7 +74,7 @@ namespace DragnDrop
 
         private void FixedUpdate()
         {
-            // If we are falling perform sweep tests
+            // If falling try find snapping position
             if (rigidBody.bodyType == RigidbodyType2D.Dynamic)
             {
                 FindSnappingPosition();
@@ -100,7 +99,7 @@ namespace DragnDrop
                 }
             }
 
-            // If no we fall
+            // If no collider detected nearby - fall down
             if (closestCollider == null)
             {
                 rigidBody.bodyType = RigidbodyType2D.Dynamic;
@@ -109,16 +108,16 @@ namespace DragnDrop
             
             rigidBody.bodyType = RigidbodyType2D.Kinematic;
             rigidBody.linearVelocity = Vector2.zero;
-            _positionFound = true;
+            _snappingPositionFound = true;
 
-            // If inside we stay
+            // If inside a collider - stay
             if (closestCollider.OverlapPoint(transform.position))
             {
                 _snappingPosition = transform.position;
                 return;
             }
             
-            // If outside we snap to the edge
+            // If outside a collider - snap to its edge
             _snappingPosition = closestCollider.ClosestPoint(transform.position);
         }
 
@@ -142,7 +141,7 @@ namespace DragnDrop
         {
             transform.position = Vector3.SmoothDamp(transform.position, PointerPosition(), ref _smoothingVelocity, smoothness);
             rigidBody.bodyType = RigidbodyType2D.Kinematic;
-            _positionFound = false;
+            _snappingPositionFound = false;
             _pointer.Busy = true;
         }
 
