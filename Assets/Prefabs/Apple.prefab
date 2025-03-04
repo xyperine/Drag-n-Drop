@@ -52,6 +52,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8263954151727841515, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
+      propertyPath: grabClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6945c654adfa3bc49b309fc61ef373c0, type: 3}
+    - target: {fileID: 8263954151727841515, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
+      propertyPath: releaseClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5d8e323763e08814aa2dfd4a6e94f18a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

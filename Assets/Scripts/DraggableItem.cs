@@ -1,4 +1,6 @@
+using System;
 using DG.Tweening;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace DragnDrop
@@ -17,12 +19,27 @@ namespace DragnDrop
         [SerializeField, Range(0, 5)] private int jumpCount = 1;
         [SerializeField, Range(0, 0.5f)] private float jumpAnimationDurationInSeconds = 0.2f;
 
+        [Header("Audio")]
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip grabClip;
+        [SerializeField] private AudioClip releaseClip;
+        [SerializeField] private bool randomizePitch;
+        [SerializeField, ShowIf(nameof(randomizePitch))] private Range pitchRange;
+
         private Pointer _pointer;
-        
+
+        private float _defaultPitch;
+
         private Vector3 _smoothingVelocity;
         
         private Vector3 _snappingPosition;
         private bool _positionFound;
+
+
+        private void Awake()
+        {
+            _defaultPitch = audioSource.pitch;
+        }
 
 
         private void Start()
@@ -43,8 +60,6 @@ namespace DragnDrop
             {
                 return;
             }
-
-            
             
             transform.position = Vector3.SmoothDamp(transform.position, _snappingPosition, ref _smoothingVelocity, smoothness);
 
@@ -111,6 +126,15 @@ namespace DragnDrop
         private void OnMouseDown()
         {
             transform.DOScale(grabScaleChange * Vector3.one, grabAnimationDurationInSeconds);
+            
+            PlaySound(grabClip);
+        }
+
+
+        private void PlaySound(AudioClip clip)
+        {
+            audioSource.pitch = randomizePitch ? pitchRange.Random() : _defaultPitch;
+            audioSource.PlayOneShot(clip);
         }
 
 
@@ -138,6 +162,8 @@ namespace DragnDrop
             _pointer.Busy = false;
             
             transform.DOScale(Vector3.one, grabAnimationDurationInSeconds);
+            
+            PlaySound(releaseClip);
         }
 
 

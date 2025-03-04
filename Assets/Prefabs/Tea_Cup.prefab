@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.009
       objectReference: {fileID: 0}
+    - target: {fileID: 3201345966433415172, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.062
+      objectReference: {fileID: 0}
     - target: {fileID: 4665887936678936366, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -66,11 +70,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6318687311224996189, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
       propertyPath: m_Offset.y
-      value: 0.08
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 8263954151727841515, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
+      propertyPath: grabClip
+      value: 
+      objectReference: {fileID: 8300000, guid: f12ea7cc0e169ee428168c54ac962132, type: 3}
+    - target: {fileID: 8263954151727841515, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
+      propertyPath: releaseClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 099844c6279076143b01cdad16c448f4, type: 3}
+    - target: {fileID: 8263954151727841515, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
       propertyPath: snappingRange
-      value: 0.19
+      value: 0.172
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

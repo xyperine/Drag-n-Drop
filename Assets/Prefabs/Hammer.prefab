@@ -57,6 +57,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 143644a22699e7240aff22eb4ec310c2, type: 3}
     - target: {fileID: 8263954151727841515, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
+      propertyPath: grabClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5a78e104532185147bea87ba34451686, type: 3}
+    - target: {fileID: 8263954151727841515, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
+      propertyPath: releaseClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5a78e104532185147bea87ba34451686, type: 3}
+    - target: {fileID: 8263954151727841515, guid: 8a4d023a933b36441b5f2ac96ee3d5d0, type: 3}
       propertyPath: snappingRange
       value: 0.191
       objectReference: {fileID: 0}
