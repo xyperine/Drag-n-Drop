@@ -79,7 +79,8 @@ namespace DragnDrop
 #endif
 
             _desiredPosition = cameraTransform.position;
-            _desiredPosition.x += -Input.mousePositionDelta.x * Time.deltaTime * scrollSpeed;
+            float deltaX = -Input.mousePositionDelta.x / Screen.width;
+            _desiredPosition.x += deltaX * scrollSpeed;
             _desiredPosition.x = Mathf.Clamp(_desiredPosition.x, adjustedMinX, adjustedMaxX);
         }
     }

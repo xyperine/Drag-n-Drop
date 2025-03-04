@@ -730,8 +730,8 @@ MonoBehaviour:
   minX: -4.44
   maxX: 4.44
   referenceResolution: {x: 16, y: 9}
-  scrollSpeed: 2
-  smoothing: 0.0247
+  scrollSpeed: 20
+  smoothing: 0.04
 --- !u!1 &535346570
 GameObject:
   m_ObjectHideFlags: 0
